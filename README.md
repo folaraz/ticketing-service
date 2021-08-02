@@ -2,7 +2,7 @@
 
 ### **Setting up database**
 
-In the project folder, you'll find a `db-setup.sh file, Run the following commands:
+In the project folder, you'll find a `db-setup.sh` file, Run the following commands:
 
 ``chmod +x db-setup.sh`` to make the file executable
 
