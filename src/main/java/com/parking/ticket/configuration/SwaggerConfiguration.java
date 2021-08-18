@@ -24,7 +24,7 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("Expense Management API")
+                .title("Parking Ticket API")
                 .description("This API can be used to interact with parking ticket endpoints.")
                 .version("V1.0")
                 .build();

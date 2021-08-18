@@ -17,8 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "parkbooking")
-public class ParkBooking {
+@Table(name = "bookings")
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class ParkBooking {
 
     private boolean paid;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parkBooking")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booking")
     private List<BookingActivity> bookingActivities;
 
     @CreationTimestamp

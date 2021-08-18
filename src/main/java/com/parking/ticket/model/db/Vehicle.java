@@ -1,6 +1,6 @@
 package com.parking.ticket.model.db;
 
-import com.parking.ticket.model.VehicleType;
+import com.parking.ticket.model.constants.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -25,6 +25,7 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
 
     private int capacity;
@@ -33,10 +34,4 @@ public class Vehicle {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicle")
     private List<ParkSpace> parkSpaces;
-
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDateTime;
 }

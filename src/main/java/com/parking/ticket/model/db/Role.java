@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
 
     @Id
@@ -19,7 +19,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private com.parking.ticket.model.Role name;
+    private com.parking.ticket.model.constants.Role name;
 
     public Integer getId() {
         return id;
@@ -29,11 +29,11 @@ public class Role {
         this.id = id;
     }
 
-    public com.parking.ticket.model.Role getName() {
+    public com.parking.ticket.model.constants.Role getName() {
         return name;
     }
 
-    public void setName(com.parking.ticket.model.Role name) {
+    public void setName(com.parking.ticket.model.constants.Role name) {
         this.name = name;
     }
 }

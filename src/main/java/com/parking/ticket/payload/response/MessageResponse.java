@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public class MessageResponse {
     private String message;
 
-    private HttpStatus httpStatus;
+    private final HttpStatus httpStatus;
 
     public MessageResponse(String message, HttpStatus httpStatus) {
         this.message = message;

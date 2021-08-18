@@ -1,4 +1,4 @@
-package com.parking.ticket.model;
+package com.parking.ticket.model.constants;
 
 public enum BookingStatus {
     PENDING,

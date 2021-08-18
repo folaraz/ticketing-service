@@ -1,10 +1,8 @@
 package com.parking.ticket.model.db;
 
 
-import com.parking.ticket.model.Gender;
+import com.parking.ticket.model.constants.Gender;
 import lombok.*;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -32,16 +30,13 @@ public class User {
     @Size(max = 20)
     private String username;
 
-    @NotBlank
     private String firstName;
 
-    @NotBlank
     private String lastName;
 
-    @NotBlank
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @NotBlank
     private Date dateOfBirth;
 
     @NotBlank
@@ -61,7 +56,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<ParkBooking> parkBookings = new ArrayList<>();
+    private List<Booking> bookings = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
@@ -72,7 +67,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, @NotBlank @Size(max = 20) String username, @NotBlank String firstName, @NotBlank String lastName, @NotBlank Gender gender, @NotBlank Date dateOfBirth, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(max = 120) String password, Set<Role> roles, List<ParkBooking> parkBookings, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
+    public User(Long id, @NotBlank @Size(max = 20) String username, @NotBlank String firstName, @NotBlank String lastName, @NotBlank Gender gender, @NotBlank Date dateOfBirth, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(max = 120) String password, Set<Role> roles, List<Booking> bookings, LocalDateTime createDateTime, LocalDateTime updateDateTime) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -82,7 +77,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.roles = roles;
-        this.parkBookings = parkBookings;
+        this.bookings = bookings;
         this.createDateTime = createDateTime;
         this.updateDateTime = updateDateTime;
     }
@@ -159,12 +154,12 @@ public class User {
         this.roles = roles;
     }
 
-    public List<ParkBooking> getParkBookings() {
-        return parkBookings;
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setParkBookings(List<ParkBooking> parkBookings) {
-        this.parkBookings = parkBookings;
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     public LocalDateTime getCreateDateTime() {
@@ -193,7 +188,7 @@ public class User {
         private String email;
         private String password;
         private Set<Role> roles = new HashSet<>();
-        private List<ParkBooking> parkBookings = new ArrayList<>();
+        private List<Booking> bookings = new ArrayList<>();
         private LocalDateTime createDateTime;
         private LocalDateTime updateDateTime;
 
@@ -249,8 +244,8 @@ public class User {
             return this;
         }
 
-        public UserBuilder withParkBookings(List<ParkBooking> parkBookings) {
-            this.parkBookings = parkBookings;
+        public UserBuilder withParkBookings(List<Booking> bookings) {
+            this.bookings = bookings;
             return this;
         }
 
@@ -265,7 +260,7 @@ public class User {
         }
 
         public User build() {
-            return new User(id, username, firstName, lastName, gender, dateOfBirth, email, password, roles, parkBookings, createDateTime, updateDateTime);
+            return new User(id, username, firstName, lastName, gender, dateOfBirth, email, password, roles, bookings, createDateTime, updateDateTime);
         }
     }
 }

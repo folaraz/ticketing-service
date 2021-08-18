@@ -1,14 +1,16 @@
 package com.parking.ticket.service.user;
 
+import com.parking.ticket.model.constants.Gender;
 import com.parking.ticket.model.db.Role;
 import com.parking.ticket.model.db.User;
-import com.parking.ticket.payload.request.LoginRequest;
-import com.parking.ticket.payload.request.SignupRequest;
+import com.parking.ticket.payload.request.SignInRequest;
+import com.parking.ticket.payload.request.SignUpRequest;
 import com.parking.ticket.payload.response.JwtResponse;
 import com.parking.ticket.payload.response.MessageResponse;
 import com.parking.ticket.repository.RoleRepository;
 import com.parking.ticket.repository.UserRepository;
 import com.parking.ticket.util.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,12 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserAuthenticationManager {
 
     private final AuthenticationManager authenticationManager;
@@ -46,10 +50,10 @@ public class UserAuthenticationManager {
     }
 
 
-    public JwtResponse authenticateUserSignIn(LoginRequest loginRequest) {
+    public JwtResponse authenticateUserSignIn(SignInRequest signInRequest) {
         JwtResponse.JwtResponseBuilder builder = new JwtResponse.JwtResponseBuilder();
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -67,38 +71,49 @@ public class UserAuthenticationManager {
         return builder.build();
     }
 
-    public MessageResponse authenticateUserSignUp(SignupRequest signupRequest) {
-        String username = signupRequest.getUsername();
-        String password = signupRequest.getPassword();
-        String email = signupRequest.getEmail();
-        Set<String> strRoles = signupRequest.getRole();
+    public MessageResponse authenticateUserSignUp(SignUpRequest signUpRequest) {
+        String username = signUpRequest.getUsername();
+        String password = signUpRequest.getPassword();
+        String email = signUpRequest.getEmail();
+        Date dateOfBirth = signUpRequest.getDateOfBirth();
+        String firstName = signUpRequest.getFirstName();
+        String lastName = signUpRequest.getLastName();
+        Gender gender = signUpRequest.getGender();
+
+        Set<String> strRoles = signUpRequest.getRole();
 
         if (userRepository.existsByUsername(username)) {
-            return new MessageResponse("Error : Username already exists", HttpStatus.BAD_REQUEST);
+            log.error("Username '{}' already exists", username);
+            return new MessageResponse("Username already exists", HttpStatus.BAD_REQUEST);
         }
         if (userRepository.existsByEmail(email)) {
-            return new MessageResponse("Error : Email already exists", HttpStatus.BAD_REQUEST);
+            log.error("User with username {} has an email that already exits", username);
+            return new MessageResponse("Email already exists", HttpStatus.BAD_REQUEST);
         }
 
         User.UserBuilder builder = new User.UserBuilder();
         builder.withUsername(username)
                 .withEmail(email)
+                .withDateOfBirth(dateOfBirth)
+                .withFirstName(firstName)
+                .withLastName(lastName)
+                .withGender(gender)
                 .withPassword(encoder.encode(password));
 
         Set<Role> roles = new HashSet<>();
 
         if (ObjectUtils.isEmpty(strRoles)) {
-            Role role = roleRepository.findByName(com.parking.ticket.model.Role.USER)
+            Role role = roleRepository.findByName(com.parking.ticket.model.constants.Role.USER)
                     .orElseThrow(() -> new RuntimeException("Error : Role not found."));
             roles.add(role);
         } else {
             strRoles.forEach(r -> {
                 if ("admin".equals(r)) {
-                    Role adminRole = roleRepository.findByName(com.parking.ticket.model.Role.ADMIN)
+                    Role adminRole = roleRepository.findByName(com.parking.ticket.model.constants.Role.ADMIN)
                             .orElseThrow(() -> new RuntimeException("Error : Role not found"));
                     roles.add(adminRole);
                 } else {
-                    Role userRole = roleRepository.findByName(com.parking.ticket.model.Role.USER)
+                    Role userRole = roleRepository.findByName(com.parking.ticket.model.constants.Role.USER)
                             .orElseThrow(() -> new RuntimeException("Error : Role not found"));
                     roles.add(userRole);
                 }
@@ -106,6 +121,7 @@ public class UserAuthenticationManager {
         }
         builder.withRoles(roles);
         userRepository.save(builder.build());
+        log.info("User with username {} has been registered successfully", username);
         return new MessageResponse("User Registered Successfully!", HttpStatus.OK);
     }
 

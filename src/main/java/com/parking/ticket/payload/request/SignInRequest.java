@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
 
 
-public class LoginRequest {
+public class SignInRequest {
 
     @NotBlank
     @ApiModelProperty(notes = "Username of the User", name = "user", required = true)

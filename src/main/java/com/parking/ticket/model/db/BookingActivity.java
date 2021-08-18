@@ -1,7 +1,7 @@
 package com.parking.ticket.model.db;
 
 
-import com.parking.ticket.model.BookingStatus;
+import com.parking.ticket.model.constants.BookingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "bookingactivity")
+@Table(name = "booking_activities")
 public class BookingActivity {
 
     @Id
@@ -26,7 +26,7 @@ public class BookingActivity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booking_id")
-    private ParkBooking parkBooking;
+    private Booking booking;
 
     private BookingStatus bookingStatus;
 

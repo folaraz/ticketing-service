@@ -3,7 +3,6 @@ package com.parking.ticket.configuration;
 import com.parking.ticket.service.jwt.AuthenticationEntryPointJwt;
 import com.parking.ticket.service.jwt.AuthenticationTokenFilter;
 import com.parking.ticket.service.user.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,19 +20,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    final
-    UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     private final AuthenticationEntryPointJwt unauthorizedHandler;
 
-    public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService, AuthenticationEntryPointJwt unauthorizedHandler) {
+    private final AuthenticationTokenFilter authenticationJwtTokenFilter;
+
+    public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService, AuthenticationEntryPointJwt unauthorizedHandler, AuthenticationTokenFilter authenticationJwtTokenFilter) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
-    }
-
-    @Bean
-    public AuthenticationTokenFilter authenticationJwtTokenFilter() {
-        return new AuthenticationTokenFilter();
+        this.authenticationJwtTokenFilter = authenticationJwtTokenFilter;
     }
 
     @Override
@@ -57,11 +53,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/api/**").permitAll()
                 .antMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs","/webjars/**").permitAll()
                 .anyRequest().authenticated();
-
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }

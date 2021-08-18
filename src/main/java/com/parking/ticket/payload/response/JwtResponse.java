@@ -19,7 +19,6 @@ public class JwtResponse {
     }
 
 
-
     public String getAccessToken() {
         return token;
     }

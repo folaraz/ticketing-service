@@ -1,3 +1,3 @@
-INSERT INTO role(name)
+INSERT INTO roles(name)
 VALUES ('USER'),
        ('ADMIN');

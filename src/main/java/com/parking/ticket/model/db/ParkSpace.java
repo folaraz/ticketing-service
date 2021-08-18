@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "parkspace")
+@Table(name = "park_spaces")
 public class ParkSpace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,9 @@ public class ParkSpace {
     private String parkingSpaceName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parkSpace")
-    private List<ParkBooking> parkBookings = new ArrayList<>();
+    private final List<Booking> bookings = new ArrayList<>();
+
+    private boolean isAvailable;
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
