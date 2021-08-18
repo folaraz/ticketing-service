@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiOperation(value = "/api/v1/ticket", tags = "Ticket Controller")
+@ApiOperation(value = "/api/v1/profile", tags = "Profile Controller")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/ticket")
-public class TicketController {
-
+@RequestMapping("/api/v1/profile")
+public class ProfileController {
 }
