@@ -35,10 +35,4 @@ public class ParkSpace {
 
     private boolean isAvailable;
 
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDateTime;
-
 }
