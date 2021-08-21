@@ -3,6 +3,8 @@ package com.parking.ticket.util;
 import com.parking.ticket.service.user.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Service
-@Slf4j
 public class JwtUtils {
-    
+
+    private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
+
     @Value("${ems.jwt.secret}")
     private String jwtSecret;
 
