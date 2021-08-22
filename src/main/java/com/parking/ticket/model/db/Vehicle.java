@@ -5,11 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -34,4 +31,20 @@ public class Vehicle {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicle")
     private List<ParkSpace> parkSpaces;
+
+    public Long getId() {
+        return id;
+    }
+
+    public VehicleType getVehicleType() {
+        return vehicleType;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public double getRatePerHour() {
+        return ratePerHour;
+    }
 }
