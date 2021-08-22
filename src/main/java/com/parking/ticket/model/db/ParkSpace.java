@@ -5,11 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,4 +32,20 @@ public class ParkSpace {
 
     private boolean isAvailable;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public String getParkingSpaceName() {
+        return parkingSpaceName;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
 }
